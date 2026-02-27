@@ -10,8 +10,8 @@
 
 ## Tecnologias Utilizadas
 - **Frontend**: React + Vite
-- **Backend**: Fastify (Node.js)
-- **Banco de Dados**: MongoDB (ou PostgreSQL, dependendo da sua escolha)
+- **Backend**: Typescript (Node.js)
+- **Banco de Dados**: MongoDB
 - **Docker**: Para facilitar o setup e execução do projeto
 
 ## Como Executar o Projeto
@@ -21,3 +21,11 @@ Para rodar o projeto em seu ambiente local, use o seguinte comando:
 
 ```bash
 docker compose -f docker/dev/docker-compose.yml -p freightboard up -d --build
+```
+
+### 2. **Desligar o projeto**
+Para desligar o projeto em seu ambiente local, use o seguinte comando:
+
+```bash
+docker compose -f docker/dev/docker-compose.yml -p freightboard down
+```
