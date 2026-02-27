@@ -1,0 +1,17 @@
+# Usando a imagem base do Nginx Alpine
+FROM nginx:1.28.2-alpine3.23
+
+# Copiar o arquivo de configuração nginx.conf
+COPY ./docker/dev/nginx/conf.d/nginx.conf /etc/nginx/nginx.conf
+
+# Copiar a configuração adicional de nginx para o diretório de configuração
+COPY ./docker/dev/nginx/conf.d /etc/nginx/conf.d
+
+# Copiar certificados para o diretório de certificados
+COPY ./docker/dev/nginx/certs /etc/nginx/certs
+
+# Expõe as portas 80 e 443
+EXPOSE 80 443
+
+# Comando para rodar o Nginx em primeiro plano
+CMD ["nginx", "-g", "daemon off;"]

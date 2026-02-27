@@ -1,0 +1,20 @@
+# Usar Node node:24.14.0-alpine3.23
+FROM node:24.14.0-alpine3.23
+
+# Criando diretório de trabalho dentro do container
+WORKDIR /frontend
+
+# Copiando package.json e package-lock.json
+COPY ./frontend/package*.json ./
+
+# Instalando as dependências do projeto, incluindo o Vite
+RUN npm install
+
+# Copiando o restante do código para dentro do container
+COPY ./frontend/ ./
+
+# Expondo a porta 5173 para o Vite
+EXPOSE 5173
+
+# Rodando o comando de desenvolvimento
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

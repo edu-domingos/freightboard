@@ -1,0 +1,20 @@
+# Usar Node 24.14.0-alpine3.23
+FROM node:24.14.0-alpine3.23
+
+# Diretório de trabalho
+WORKDIR /backend
+
+# Copiar package.json e package-lock.json
+COPY ./backend/package*.json ./
+
+# Instalar dependências de desenvolvimento e produção
+RUN npm install
+
+# Copiar o restante do código
+COPY ./backend/ ./
+
+# Expor porta
+EXPOSE 5000
+
+# Comando para rodar em dev com hot reload
+CMD ["npx", "ts-node-dev", "--transpile-only", "src/server.ts"]
