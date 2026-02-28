@@ -17,4 +17,4 @@ COPY ./backend/ ./
 EXPOSE 5000
 
 # Comando para rodar em dev com hot reload
-CMD ["npx", "ts-node-dev", "--transpile-only", "src/server.ts"]
+CMD ["npm", "run", "dev"]
