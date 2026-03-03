@@ -58,7 +58,7 @@ export default function Cadastro() {
             type="button"
             onClick={() => navigate("/")}
           >
-            Voltar para Login
+             Login
           </button>
         </form>
       </div>
