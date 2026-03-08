@@ -55,9 +55,7 @@ export default function Home() {
       <div className="recentSection">
         <h2>Fretes Recentes</h2>
         <ul>
-          <li>São Paulo → Rio de Janeiro</li>
-          <li>Campinas → Belo Horizonte</li>
-          <li>Curitiba → Porto Alegre</li>
+          
         </ul>
       </div>
     </div>
