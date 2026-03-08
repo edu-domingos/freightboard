@@ -4,9 +4,6 @@ FROM nginx:1.28.2-alpine3.23
 # Copiar o arquivo de configuração nginx.conf
 COPY ./docker/dev/nginx/conf.d/nginx.conf /etc/nginx/nginx.conf
 
-# Copiar a configuração adicional de nginx para o diretório de configuração
-COPY ./docker/dev/nginx/conf.d /etc/nginx/conf.d
-
 # Copiar certificados para o diretório de certificados
 COPY ./docker/dev/nginx/certs /etc/nginx/certs
 

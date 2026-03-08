@@ -1,0 +1,13 @@
+{
+  // fonte
+  "editor.fontFamily": "'Fira Code'",
+  "editor.fontLigatures": true,
+
+  // vscode
+  "editor.minimap.enabled": false,
+  "explorer.compactFolders": false,
+
+  // icone
+  "workbench.iconTheme": "material-icon-theme",
+  "material-icon-theme.activeIconPack": "nest",
+}
