@@ -39,7 +39,7 @@ export default function Login() {
 
          
         </form>
-         <button type="button"onClick={() => navigate("/cadastro")}
+         <button type="button"onClick={() => navigate("/home")}
           >
             Cadastra-se
           </button> 
