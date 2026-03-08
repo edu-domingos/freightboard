@@ -5,6 +5,7 @@
 
   // vscode
   "editor.minimap.enabled": false,
+  "explorer.compactFolders": false,
 
   // icone
   "workbench.iconTheme": "material-icon-theme",
