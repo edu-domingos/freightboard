@@ -63,10 +63,13 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_DATABASE: freightboard
     volumes:
       - mongo-data:/data/db
     expose:
       - "27017"
+    ports:
+      - "27017:27017"
     networks:
       - app-network
     mem_limit: 2g
