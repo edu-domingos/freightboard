@@ -24,7 +24,7 @@ export default function Login() {
             placeholder="Digite seu email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
+            
           />
 
           <input
@@ -32,14 +32,15 @@ export default function Login() {
             placeholder="Digite sua senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            
           />
 
-          <button type="submit">Entrar</button>
+          <button type="button"onClick={() => navigate("/home")}
+          >Entrar</button>
 
          
         </form>
-         <button type="button"onClick={() => navigate("/home")}
+         <button type="button"onClick={() => navigate("/cadastro")}
           >
             Cadastra-se
           </button> 
