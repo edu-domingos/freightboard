@@ -1,22 +1,22 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as argon2 from 'argon2';
 import * as crypto from 'crypto';
 
 @Injectable()
 export class PasswordService {
   private readonly pepper: string;
+  private readonly configService: ConfigService;
 
   constructor() {
-    if (!process.env.PEPPER) {
-      throw new InternalServerErrorException(
-        'PEPPER environment variable is not set',
-      );
-    }
-    this.pepper = process.env.PEPPER;
+    this.pepper = this.configService.getOrThrow<string>('PEPPER');
   }
 
   private applyPepper(password: string): string {
-    return crypto.createHmac('sha256', this.pepper).update(password).digest('hex');
+    return crypto
+      .createHmac('sha256', this.pepper)
+      .update(password)
+      .digest('hex');
   }
 
   async hashPassword(password: string): Promise<string> {

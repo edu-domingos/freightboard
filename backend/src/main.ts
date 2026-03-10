@@ -1,4 +1,3 @@
-
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -11,22 +10,22 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter()
+    new FastifyAdapter(),
   );
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
+      whitelist: true, // remove propriedades que não estão no obj DTO
+      forbidNonWhitelisted: true, // aponta erro pra prop inexistente no DTO
+      transform: true, // converte dados dos params da requisição e DTOs
     }),
   );
 
   const configService = app.get(ConfigService);
-  const port: number = configService.get<number>('PORT') ?? 5000;
-  const host: string = configService.get<string>('HOST') ?? '0.0.0.0';
+  const port: number = configService.getOrThrow<number>('PORT');
+  const host: string = configService.getOrThrow<string>('HOST');
 
   await app.listen(port, host);
   console.log(`🚀 Server running on http://${host}:${port}`);
 }
-bootstrap();
+void bootstrap();
