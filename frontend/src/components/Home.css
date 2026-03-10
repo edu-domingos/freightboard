@@ -1,0 +1,165 @@
+/* CONTAINER PRINCIPAL */
+
+.homeContainer {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #000000, #2a5298);
+  color: white;
+}
+
+/* HEADER */
+
+.homeHeader {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+/* MENU AREA */
+
+.menuArea {
+  position: relative;
+}
+
+/* BOTÃO HAMBURGER */
+
+.menuButton {
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* DROPDOWN */
+
+.menuDropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: #1e3c72;
+  border-radius: 8px;
+  width: 180px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* NOME */
+
+.userName {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+/* BOTÕES DO MENU */
+
+.menuDropdown button {
+  background: transparent;
+  border: none;
+  padding: 10px;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-top: 5px;
+}
+
+/* HOVER MENU */
+
+.menuDropdown button:hover {
+  background: #16305a;
+}
+
+/* GRID PRINCIPAL */
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+}
+
+/* CAIXAS DO GRID */
+
+.gridBox {
+  background: white;
+  color: #333;
+  border-radius: 50px;
+  padding: 90px;
+  font-weight: bold;
+  font-style: italic;
+   animation: fadeSlideUp 0.9s ease forwards;
+ 
+}
+
+/* DASHBOARD */
+
+.dashboard h2 {
+  margin-bottom: 15px;
+  font-style: italic;
+  font-weight: bold;}
+
+/* CARDS */
+
+.cardsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  
+}
+
+.card {
+  background:gray;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.card p {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* INPUTS */
+
+.gridBox input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* BOTÃO */
+
+.primaryButton {
+  margin-top: 15px;
+  padding: 10px;
+  border: none;
+  background: #1e3c72;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.primaryButton:hover {
+  background: #16305a;
+}
+@keyframes fadeSlideUp{
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

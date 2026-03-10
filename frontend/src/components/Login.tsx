@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Login.css';
+import logo from "../assets/logo.png";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ export default function Login() {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2>FreightDashboard</h2>
+        <img src={logo} alt="Freightboard Logo" className="login-logo" />
 
         <form onSubmit={handleLogin}>
           <input
@@ -23,7 +24,7 @@ export default function Login() {
             placeholder="Digite seu email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
+            
           />
 
           <input
@@ -31,16 +32,17 @@ export default function Login() {
             placeholder="Digite sua senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            
           />
 
-          <button type="submit">Entrar</button>
+          <button type="button"onClick={() => navigate("/home")}
+          >Entrar</button>
 
          
         </form>
          <button type="button"onClick={() => navigate("/cadastro")}
           >
-            Cadastrar
+            Cadastra-se
           </button> 
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css"; // pode criar depois um Cadastro.css
+import axios from "axios";
+import "./Cadastro.css";
 
 export default function Cadastro() {
   const navigate = useNavigate();
@@ -9,17 +10,26 @@ export default function Cadastro() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  function handleCadastro(e: React.FormEvent) {
+  async function handleCadastro(e: React.FormEvent) {
     e.preventDefault();
 
-    console.log("Nome:", nome);
-    console.log("Email:", email);
-    console.log("Senha:", senha);
+    try {
+      const response = await axios.post("https://localhost/api/users/register", {
+       name: nome,
+       email: email,
+       password: senha
+      });
 
-    alert("Usuário cadastrado com sucesso!");
+      console.log(response.data);
 
-    // Após cadastrar, volta para login
-    navigate("/");
+      //alert("Usuário cadastrado com sucesso!");
+
+      navigate("/");
+
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao cadastrar usuário");
+    }
   }
 
   return (
@@ -54,11 +64,11 @@ export default function Cadastro() {
 
           <button type="submit">Cadastrar</button>
 
-          <button 
+          <button
             type="button"
             onClick={() => navigate("/")}
           >
-            Voltar para Login
+            Login
           </button>
         </form>
       </div>
