@@ -1,13 +1,16 @@
 {
-  // fonte
   "editor.fontFamily": "'Fira Code'",
   "editor.fontLigatures": true,
-
-  // vscode
   "editor.minimap.enabled": false,
   "explorer.compactFolders": false,
-
-  // icone
   "workbench.iconTheme": "material-icon-theme",
   "material-icon-theme.activeIconPack": "nest",
+
+  // ===== Formatação e ESLint =====
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.format.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  }
 }
