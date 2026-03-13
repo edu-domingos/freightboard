@@ -4,6 +4,7 @@ import { ConfigService, ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -15,6 +16,7 @@ import * as Joi from 'joi';
         HOST: Joi.string().required(),
         PORT: Joi.string().required(),
         MONGO_URI: Joi.string().uri().required(),
+        PEPPER: Joi.string().required(),
       }),
     }),
     MongooseModule.forRootAsync({
@@ -24,6 +26,7 @@ import * as Joi from 'joi';
       }),
     }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

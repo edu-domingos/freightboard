@@ -6,6 +6,7 @@ import {
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
+import fastifyCookie from '@fastify/cookie';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -22,6 +23,11 @@ async function bootstrap() {
   );
 
   const configService = app.get(ConfigService);
+
+  await app.register(fastifyCookie, {
+    secret: configService.getOrThrow<string>('COOKIE_SECRET'),
+  });
+
   const port: number = configService.getOrThrow<number>('PORT');
   const host: string = configService.getOrThrow<string>('HOST');
 
