@@ -10,22 +10,25 @@ import { plainToInstance } from 'class-transformer';
 export class UsersService {
   constructor(
     private readonly usersRepository: UsersRepository,
-    private readonly passwordService: PasswordService
+    private readonly passwordService: PasswordService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-
-    const userExist = await this.usersRepository.findByEmail(createUserDto.email);
+    const userExist = await this.usersRepository.findByEmail(
+      createUserDto.email,
+    );
 
     if (userExist) {
       throw new ConflictException('e-mail já em uso');
     }
 
-    const hashPassword = await this.passwordService.hashPassword(createUserDto.password);
+    const hashPassword = await this.passwordService.hashPassword(
+      createUserDto.password,
+    );
 
     const createdUser = await this.usersRepository.create({
       ...createUserDto,
-      password: hashPassword
+      password: hashPassword,
     });
 
     return plainToInstance(ResponseUserDto, createdUser.toObject());

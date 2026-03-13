@@ -6,9 +6,8 @@ import * as crypto from 'crypto';
 @Injectable()
 export class PasswordService {
   private readonly pepper: string;
-  private readonly configService: ConfigService;
 
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
     this.pepper = this.configService.getOrThrow<string>('PEPPER');
   }
 
