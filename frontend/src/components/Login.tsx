@@ -7,6 +7,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [remember, setRemember] = useState(false);
+   
 
   function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -44,7 +46,22 @@ export default function Login() {
           >
             Cadastra-se
           </button> 
+           
+        <div className="remember-box">
+          <input
+            type="checkbox"
+            id="remember"
+            checked={remember}
+            onChange={(e) => setRemember(e.target.checked)}
+          />
+
+          <label htmlFor="remember">
+            Mantenha-me conectado
+          </label>
+          </div>
       </div>
+      
     </div>
+    
   );
 }
