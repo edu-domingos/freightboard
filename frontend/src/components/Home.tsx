@@ -36,6 +36,52 @@ export default function Home() {
       {/* GRID PRINCIPAL */}
       <div className="mainGrid">
 
+         {/* Cadastro de Motoristas */}
+        <div className="gridBox">
+          <h2>Cadastro de Motoristas</h2>
+          <input type="text" placeholder="Nome Completo"/>
+          <input type="text" placeholder="CPF"/>
+          <input type="text" placeholder="Endereço"/>
+          <input type="text" placeholder="Telefone"/>
+          <input type="text" placeholder="Veiculo de trabalho"/>
+          <button className="thirdbutton">Cadastrar</button>
+
+
+
+
+        </div>
+
+         {/* Adicionar Fretes */}
+        <div className="gridBox">
+          <h2>Adicionar Frete</h2>
+
+          <input placeholder="Origem" />
+          <input placeholder="Destino" />
+          <input placeholder="Distancia" />
+          <input placeholder="Pedagio" />
+          <input placeholder="Abastecimento" />
+          <input placeholder="Valor" />
+
+          <button className="primaryButton">
+            Salvar
+          </button>
+        </div>
+
+        
+
+         {/* Cadastro de Clientes */}
+        <div className="gridBox">
+          <h2>Cadastro de Clientes</h2>
+          <input type="text" placeholder="Nome"/>
+          <input type="text" placeholder="CNPJ/CPF"/>
+          <input type="text" placeholder="Endereço"/>
+          <input type="text" placeholder="UF"/>
+          <input type="text" placeholder="Cidade"/>
+          <input type="text" placeholder="Telefone"/>
+          
+         <button className="secondbutton">Cadastrar</button>
+        </div>
+        
         {/* DASHBOARD */}
         <div className="gridBox dashboard">
 
@@ -61,33 +107,11 @@ export default function Home() {
             <div className="card">
               <h3>Cancelados</h3>
               <p>15</p>
+              
             </div>
 
           </div>
-
-        </div>
-
-        {/* INSERIR DADOS */}
-        <div className="gridBox">
-          <h2>Adicionar Frete</h2>
-
-          <input placeholder="Origem" />
-          <input placeholder="Destino" />
-          <input placeholder="Valor" />
-
-          <button className="primaryButton">
-            Salvar
-          </button>
-        </div>
-
-        {/* ÁREA FUTURA */}
-        <div className="gridBox">
-          <h2>Área futura</h2>
-        </div>
-
-        {/* ÁREA FUTURA */}
-        <div className="gridBox">
-          <h2>Área futura</h2>
+           <button className="secondbutton">Verificar</button>
         </div>
 
       </div>
