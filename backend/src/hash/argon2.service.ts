@@ -8,8 +8,8 @@ export class Argon2Service extends HashService {
   }
 
   private getPepper(): string {
-    const pepper = this.config.get<string>('HASH_PEPPER');
-    if (!pepper) throw new Error('HASH_PEPPER not defined');
+    const pepper = this.config.get<string>('PEPPER');
+    if (!pepper) throw new Error('PEPPER not defined');
     return pepper;
   }
 
