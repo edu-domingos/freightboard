@@ -35,7 +35,7 @@ services:
       - "5173"
     networks:
       - app-network
-    mem_limit: 512m
+    mem_limit: 1g
     cpus: 0.5
 
   backend:
@@ -52,7 +52,7 @@ services:
       - "5000"
     networks:
       - app-network
-    mem_limit: 512m
+    mem_limit: 1g
     cpus: 0.75
 
   postgres:
