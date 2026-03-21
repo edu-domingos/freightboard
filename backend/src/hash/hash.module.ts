@@ -4,9 +4,10 @@ import { HashService } from './hash.service';
 
 @Module({
   providers: [
+    Argon2Service,
     {
       provide: HashService,
-      useClass: Argon2Service,
+      useExisting: Argon2Service,
     },
   ],
   exports: [HashService],

@@ -1,7 +1,9 @@
 import { HashService } from './hash.service';
 import * as argon2 from 'argon2';
 import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class Argon2Service extends HashService {
   constructor(private readonly config: ConfigService) {
     super();
@@ -9,7 +11,13 @@ export class Argon2Service extends HashService {
 
   private getPepper(): string {
     const pepper = this.config.get<string>('PEPPER');
-    if (!pepper) throw new Error('PEPPER not defined');
+
+    if (!pepper) {
+      throw new Error(
+        'Environment variable PEPPER is missing. Check your configuration.',
+      );
+    }
+
     return pepper;
   }
 
