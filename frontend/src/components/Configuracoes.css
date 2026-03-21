@@ -1,0 +1,117 @@
+.configContainer {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #000000, #2a5298);
+  color: white;
+}
+
+/* HEADER */
+.configHeader {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+ animation: fadeSlideUp 0.9s ease forwards;
+}
+
+.configHeader button {
+  padding: 8px 16px;
+  background:#1e3c72;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  animation: fadeSlideUp 0.9s ease forwards;
+}
+.configHeader button:hover {
+ background:#16305a;
+
+}
+
+
+/* LAYOUT */
+.configLayout {
+  display: flex;
+  padding: 20px;
+  animation: fadeSlideUp 0.9s ease forwards;
+}
+
+/* SIDEBAR */
+.configSidebar {
+  width: 220px;
+  background: #ECEFF1;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.configSidebar button {
+  background:#1e3c72;
+  border: none;
+  color:white;
+  padding: 12px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.configSidebar button:hover {
+  background: #16305a;
+}
+
+/* CONTEÚDO */
+.configContent {
+  flex: 1;
+  margin-left: 20px;
+}
+
+/* BOX */
+.configBox {
+  background: #ECEFF1;
+  color: #1e3c72;
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 500px;
+}
+
+/* INPUTS */
+.configBox input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* CHECKBOX */
+.configBox label {
+  display: block;
+  margin-top: 15px;
+}
+
+/* BOTÃO */
+.configBox button {
+  margin-top: 20px;
+  padding: 12px;
+  width: 100%;
+  background: #1e3c72;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+@keyframes fadeSlideUpL{
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }}
+
+.configBox button:hover {
+  background: #16305a;
+}

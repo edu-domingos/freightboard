@@ -1,0 +1,95 @@
+.perfilContainer {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #000000, #2a5298);
+  color: white;
+}
+
+/* HEADER */
+.perfilHeader {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.perfilHeader button {
+  padding: 8px 16px;
+  background: #1e3c72;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.perfilHeader button:hover{
+ background: #16305a;
+}
+
+/* CONTEÚDO */
+.perfilContent {
+  display: flex;
+  gap: 30px;
+  padding: 30px;
+}
+
+/* FOTO */
+.perfilFotoBox {
+  background: #ECEFF1;
+  color: #333;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 200px;
+}
+
+.perfilFotoBox img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.perfilFotoBox button {
+  margin-top: 15px;
+  padding: 8px;
+  background: #1e3c72;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.perfilFotoBox button:hover {
+  background: #16305a;
+ 
+}
+
+/* FORM */
+.perfilBox {
+  background: #ECEFF1;
+  color: #333;
+  padding: 25px;
+  border-radius: 10px;
+  flex: 1;
+  max-width: 500px;
+}
+
+.perfilBox input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.perfilBox button {
+  margin-top: 20px;
+  padding: 12px;
+  width: 100%;
+  background: #1e3c72;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.perfilBox button:hover {
+  background: #16305a;
+}
