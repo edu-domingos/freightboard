@@ -44,6 +44,7 @@
   display: flex;
   flex-direction: column;
   box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+   z-index: 1000; /* importante */
 }
 
 /* NOME */
@@ -85,13 +86,13 @@
 /* CAIXAS DO GRID */
 
 .gridBox {
-  background: white;
-  color: #333;
+ background: #ECEFF1;
+ color: #1e3c72;
   border-radius: 50px;
   padding: 90px;
   font-weight: bold;
   font-style: italic;
-   animation: fadeSlideUp 0.9s ease forwards;
+  animation: fadeSlideUp 0.9s ease forwards;
  
 }
 
@@ -100,7 +101,9 @@
 .dashboard h2 {
   margin-bottom: 15px;
   font-style: italic;
-  font-weight: bold;}
+  font-weight: bold;
+}
+  
 
 /* CARDS */
 
@@ -112,7 +115,7 @@
 }
 
 .card {
-  background:gray;
+  background:rgb(255, 253, 253);
   padding: 15px;
   border-radius: 8px;
 }
@@ -162,4 +165,22 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+.secondbutton {
+  margin-top: 15px;
+  padding: 10px;
+  border: none;
+  background: #1e3c72;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.thirdbutton {
+  margin-top: 15px;
+  padding: 10px;
+  border: none;
+  background: #1e3c72;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
 }

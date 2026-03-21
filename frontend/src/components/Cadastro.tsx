@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Cadastro.css";
+import "./Login.css";
 
 export default function Cadastro() {
   const navigate = useNavigate();
