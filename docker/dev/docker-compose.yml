@@ -90,6 +90,8 @@ services:
       - app-network
     depends_on:
       - postgres
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
     mem_limit: 512m
     cpus: 0.25
 
@@ -127,6 +129,7 @@ services:
 volumes:
   #mongo-data:
   postgres-data:
+  pgadmin-data:
   frontend-node-modules:
   backend-node-modules:
 
