@@ -8,15 +8,19 @@ export default function Cadastro() {
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [cpf, setcpf] = useState("");
+  const [type, settype] = useState("");
   const [senha, setSenha] = useState("");
 
   async function handleCadastro(e: React.FormEvent) {
     e.preventDefault();
 
     try {
-      const response = await axios.post("https://localhost/api/users/register", {
+      const response = await axios.post("https://localhost/api/users/", {
        name: nome,
        email: email,
+       cpf: cpf,
+       type: "driver",
        password: senha
       });
 
@@ -51,6 +55,20 @@ export default function Cadastro() {
             placeholder="Digite seu email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Digite seu CPF"
+            value={cpf}
+            onChange={(e) => setcpf(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Você é motorista ou empresa"
+            value={type}
+            onChange={(e) => settype(e.target.value)}
             required
           />
 

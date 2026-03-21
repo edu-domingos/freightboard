@@ -1,9 +1,12 @@
 import { useState } from "react";
+import {useNavigate } from "react-router-dom";
 import "./Home.css";
-import logo from '../assets/logo.png';
+
+
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="homeContainer">
@@ -24,13 +27,16 @@ export default function Home() {
           {menuOpen && (
             <div className="menuDropdown">
               <p className="userName">Olá, Bruno</p>
-
-              <button>👤 Perfil</button>
-              <button>⚙ Configurações</button>
-              <button>🚪 Sair</button>
+              
+              <button type="button"onClick={() => navigate("/perfil")}> 👤 Perfil </button>
+              <button type="button"onClick={() => navigate("/configuracoes")}> ⚙ Configurações </button>
+              <button type="button"onClick={() => navigate("/")}> 🚪 Sair </button>
+          
             </div>
+            
           )}
         </div>
+        
       </header>
 
       {/* GRID PRINCIPAL */}
