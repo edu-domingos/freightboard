@@ -1,14 +1,35 @@
-import { IsString, IsEmail, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  MinLength,
+  MaxLength,
+  IsEmail,
+  IsString,
+  IsEnum,
+} from 'class-validator';
+import { IsCPF } from '../../common/decorators/is-cpf-decorators';
+import { UserType } from '../enums/user-type.enum';
 
 export class CreateUserDto {
-  @IsString({ message: 'O nome precisa ser um texto' })
-  @MinLength(3, { message: 'O nome precisa ter ao menos 3 caracteres' })
-  readonly name: string;
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(3)
+  @MaxLength(100)
+  name: string;
 
-  @IsEmail({}, { message: 'Email inválido' })
-  readonly email: string;
+  @IsNotEmpty()
+  @IsCPF()
+  cpf: string;
 
-  @IsString({ message: 'O password precisa ser um texto' })
-  @MinLength(6, { message: 'O nome precisa ter ao menos 6 caracteres' })
-  readonly password: string;
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(6)
+  password: string;
+
+  @IsNotEmpty()
+  @IsEnum(UserType)
+  type: UserType;
 }
