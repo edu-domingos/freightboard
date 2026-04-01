@@ -5,6 +5,7 @@ import {
   IsEmail,
   IsString,
   IsEnum,
+  Length,
 } from 'class-validator';
 import { IsCPF } from '../../common/decorators/is-cpf-decorators';
 import { UserType } from '../enums/user-type.enum';
@@ -17,6 +18,7 @@ export class CreateUserDto {
   name: string;
 
   @IsNotEmpty()
+  @Length(11, 14)
   @IsCPF()
   cpf: string;
 

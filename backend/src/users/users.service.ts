@@ -9,13 +9,13 @@ import { UserRole } from './enums/user-role.enum';
 import { UsersRepository } from './users.repository';
 import { User } from './entities/user.entity';
 import { DeepPartial } from 'typeorm';
-import { HashService } from 'src/hash/hash.service';
+import { Argon2Service } from 'src/auth/argon2.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly userRepository: UsersRepository,
-    private readonly hashService: HashService,
+    private readonly hashService: Argon2Service,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -27,8 +27,11 @@ export class UsersService {
 
     const passwordHash = await this.hashService.hash(createUserDto.password);
 
+    const cpf = createUserDto.cpf.replace(/\D/g, '');
+
     const userData: DeepPartial<User> = {
       ...createUserDto,
+      cpf: cpf,
       password: passwordHash,
       role: UserRole.USER,
     };

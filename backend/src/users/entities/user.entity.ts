@@ -9,13 +9,14 @@ import {
 import { UserType } from '../enums/user-type.enum';
 import { UserRole } from '../enums/user-role.enum';
 import { Freight } from 'src/freights/entitites/freight.entity';
+import { RefreshToken } from 'src/auth/refresh-tokens.entity';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 12 })
+  @Column({ type: 'varchar', unique: true, length: 11 })
   cpf: string;
 
   @Column({ type: 'varchar', length: 100 })
@@ -36,14 +37,17 @@ export class User {
   @Column({ default: true })
   active: boolean;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt?: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt?: Date;
+  @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user, { cascade: true })
+  refreshTokens: RefreshToken[];
 
   @OneToMany(() => Freight, (freight) => freight.user, {
     onUpdate: 'CASCADE',
   })
   freights: Freight[];
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt?: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt?: Date;
 }

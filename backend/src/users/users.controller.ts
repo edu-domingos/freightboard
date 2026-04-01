@@ -5,43 +5,34 @@ import {
   HttpCode,
   HttpStatus,
   Patch,
-  Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthTokenGuard } from 'src/auth/guards/auth-token.guard';
-import { CurrentUser } from 'src/auth/decorators/params/current-user.decorator';
-import { User } from './entities/user.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import type { FastifyRequest } from 'fastify';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  /** cadastrar usuário */
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  async register(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
-
   /** atualizar usuário */
-  @UseGuards(AuthTokenGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch('me')
   @HttpCode(HttpStatus.OK)
   async update(
     @Body() updateUserDto: UpdateUserDto,
-    @CurrentUser() user: User,
+    @Req() request: FastifyRequest,
   ) {
-    return this.usersService.update(user.id, updateUserDto);
+    return this.usersService.update(request.user.id, updateUserDto);
   }
 
   /** trazer dados do usuário */
-  @UseGuards(AuthTokenGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  async findById(@CurrentUser() user: User) {
-    return this.usersService.findById(user.id);
+  async findById(@Req() request: FastifyRequest) {
+    return this.usersService.findById(request.user.id);
   }
 }

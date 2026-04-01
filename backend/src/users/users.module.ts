@@ -3,15 +3,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersController } from './users.controller';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
-import { HashModule } from 'src/hash/hash.module';
 import { UsersRepository } from './users.repository';
 import { Freight } from 'src/freights/entitites/freight.entity';
-import { TokenModule } from 'src/token/token.module';
+import { Argon2Service } from 'src/auth/argon2.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Freight]), HashModule, TokenModule],
+  imports: [TypeOrmModule.forFeature([User, Freight])],
   controllers: [UsersController],
-  providers: [UsersService, UsersRepository],
+  providers: [UsersService, UsersRepository, Argon2Service],
   exports: [UsersService],
 })
 export class UsersModule {}
