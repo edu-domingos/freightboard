@@ -13,9 +13,9 @@ services:
       backend:
         condition: service_started
       postgres:
-        condition: service_healthy
-      # mongo:
-      #   condition: service_healthy
+        condition: service_started
+      redis:
+        condition: service_started
     networks:
       - app-network
     mem_limit: 256m
@@ -71,67 +71,28 @@ services:
       - app-network
     mem_limit: 1g
     cpus: 1
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d freightboard"]
-      interval: 10s
-      timeout: 10s
-      retries: 10
-      start_period: 20s
 
-  pgadmin:
-    image: dpage/pgadmin4:9.13.0
-    container_name: pgadmin
-    env_file:
-      - ../../env/development.env
-    restart: always
+  redis:
+    image: redis:8.2-alpine
+    container_name: redis
+    restart: unless-stopped
+    expose:
+      - "6379"
     ports:
-      - "5050:80"
+      - "6379:6379"
     networks:
       - app-network
-    depends_on:
-      - postgres
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
-    mem_limit: 512m
+      - redis-data:/data
+    mem_limit: 256m
     cpus: 0.25
-
-  # mongo:
-  #   image: mongo:8.0.19
-  #   container_name: mongodb
-  #   env_file:
-  #     - ../../env/development.env
-  #   restart: unless-stopped
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: admin
-  #     MONGO_INITDB_ROOT_PASSWORD: pass
-  #     MONGO_INITDB_DATABASE: freightboard
-  #   volumes:
-  #     - mongo-data:/data/db
-  #   expose:
-  #     - "27017"
-  #   ports:
-  #     - "27017:27017"
-  #   networks:
-  #     - app-network
-  #   mem_limit: 2g
-  #   cpus: 1
-  #   healthcheck:
-  #     test:
-  #       [
-  #         "CMD-SHELL",
-  #         'mongosh -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --authenticationDatabase admin --eval ''db.adminCommand("ping")'' || exit 1',
-  #       ]
-  #     interval: 10s
-  #     timeout: 10s
-  #     retries: 10
-  #     start_period: 20s
+    command: ["redis-server", "--save", "60", "1", "--appendonly", "yes"]
 
 volumes:
-  #mongo-data:
   postgres-data:
-  pgadmin-data:
   frontend-node-modules:
   backend-node-modules:
+  redis-data:
 
 networks:
   app-network:
