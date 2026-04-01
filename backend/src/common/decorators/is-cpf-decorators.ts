@@ -1,5 +1,5 @@
 import { registerDecorator, ValidationOptions } from 'class-validator';
-import { IsCPFConstraint } from '../validators/is-cpf.validator';
+import { IsCPFConstraint } from './is-cpf.validator';
 
 export function IsCPF(validationOptions?: ValidationOptions) {
   return function (object: object, propertyName: string) {

@@ -1,21 +1,35 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
-import { LoginDto } from './dto/login.dto';
-import { HashService } from '../hash/hash.service';
-import { TokenService } from 'src/token/token.service';
+import { LoginDto } from './login.dto';
 import { User } from 'src/users/entities/user.entity';
-import { RefreshTokenDto } from 'src/token/dto/refresh-token.dto';
-import { TokenType } from 'src/token/enums/token-type.enum';
+import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { JwtPayload } from './jwt-payload.interface';
+import { JwtType } from './jwt-type.enum';
+import { RefreshJwtDto } from './refresh-jwt.dto';
+import { Argon2Service } from './argon2.service';
+import { ConfigService } from '@nestjs/config';
+import { v4 as uuidv4 } from 'uuid';
+import { RefreshToken } from './refresh-tokens.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class AuthSerivce {
+export class AuthService {
   constructor(
     private readonly usersService: UsersService,
-    private readonly hashService: HashService,
-    private readonly tokenSerive: TokenService,
+    private readonly hashService: Argon2Service,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    @InjectRepository(RefreshToken)
+    private readonly refreshTokenRepository: Repository<RefreshToken>
   ) {}
 
-  async login(loginDto: LoginDto) {
+  async register(createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
+  }
+
+  async login(userAgent: string, loginDto: LoginDto) {
     const user = await this.usersService.findByEmail(loginDto.email);
 
     const passwordIsValid = await this.hashService.compare(
@@ -27,39 +41,99 @@ export class AuthSerivce {
       throw new UnauthorizedException('Email or password is invalid');
     }
 
-    return this.createTokens(user);
+    return this.createTokens(userAgent, user);
   }
 
-  async refreshToken(refreshTokenDto: RefreshTokenDto) {
-    const payload = this.tokenSerive.verifyToken(refreshTokenDto.refreshToken);
+  async refreshToken(user: User, userAgent: string, refreshTokenDto: RefreshJwtDto) {
+    let payload: JwtPayload;
 
-    if (!payload || payload.sub) {
-      throw new UnauthorizedException('');
+    try {
+      payload = this.jwtService.verify<JwtPayload>(refreshTokenDto.refreshToken);
+    } catch {
+      throw new UnauthorizedException('Refresh token inválido ou expirado');
     }
 
-    const user = await this.usersService.findById(payload.sub);
+    if (payload.type !== JwtType.REFRESH) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
 
-    return this.createTokens(user);
+    const tokenExists = await this.refreshTokenRepository.findOne({
+      where: { jti: payload.jti },
+    });
+
+    if (!tokenExists) {
+      throw new UnauthorizedException('Token inválido ou já utilizado');
+    }
+
+    await this.refreshTokenRepository.delete({ jti: payload.jti });
+
+    return this.createTokens(userAgent, user);
   }
 
-  createTokens(user: User) {
+  async logout(id: string, refreshTokenDto: RefreshJwtDto) {
+    try {
+      const payload = this.jwtService.verify<JwtPayload>(refreshTokenDto.refreshToken);
+
+      if (payload.type !== JwtType.REFRESH) {
+        throw new UnauthorizedException('Token inválido');
+      }
+
+      const tokenExists = await this.refreshTokenRepository.findOne({
+        where: { jti: payload.jti },
+      });
+
+      if (!tokenExists) {
+        throw new UnauthorizedException('Token inválido ou revogado');
+      }
+
+      await this.refreshTokenRepository.delete({
+        jti: payload.jti,
+      });
+
+      return { message: 'Logout realizado com sucesso' };
+
+    } catch {
+      throw new UnauthorizedException('Refresh token inválido');
+    }
+  }
+
+  async createTokens(userAgent: string = 'unknown', user: User) {
+    const accessJti = uuidv4();
     const accessPayload = {
       sub: user.id,
-      type: TokenType.ACCESS,
+      type: JwtType.ACCESS,
+      jti: accessJti,
     };
 
+    const refreshJti = uuidv4();
     const refreshPayload = {
       sub: user.id,
-      type: TokenType.REFRESH,
+      type: JwtType.REFRESH,
+      jti: refreshJti,
     };
 
-    const accessToken = this.tokenSerive.signAccessToken(accessPayload);
+    const jwtExpires = Number(this.configService.get<number>('JWT_EXPIRES_IN'));
+    const accessToken = this.jwtService.sign(accessPayload, {
+      expiresIn: jwtExpires,
+    });
 
-    const refreshToken = this.tokenSerive.signRefreshToken(refreshPayload);
+    const jwtRefreshExpires = Number(this.configService.get<number>('JWT_REFRESH_EXPIRES_IN'));
+    const refreshToken = this.jwtService.sign(refreshPayload, {
+      expiresIn: jwtRefreshExpires,
+    });
+
+    const decoded = this.jwtService.decode(refreshToken) as any;
+
+    await this.refreshTokenRepository.save({
+      jti: refreshJti,
+      user: { id: user.id },
+      expiresAt: new Date(decoded.exp * 1000),
+      userAgent: userAgent,
+    });
 
     return {
-      accessToken: accessToken,
-      refreshToken: refreshToken,
+      accessToken,
+      refreshToken,
     };
   }
 }
