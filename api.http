@@ -1,0 +1,89 @@
+@baseUrl = https://localhost/api
+### =========================
+### AUTH
+### =========================
+
+### Registrar usuário
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "João Teste",
+  "email": "joao@test.com",
+  "password": "123456",
+  "cpf": "123456789011",
+  "type": "driver"
+}
+
+###
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "joao@test.com",
+  "password": "123456"
+}
+
+###
+
+# Copie o accessToken retornado e cole abaixo
+@accessToken = COLE_SEU_ACCESS_TOKEN
+@refreshToken = COLE_SEU_REFRESH_TOKEN
+
+### Refresh token
+POST {{baseUrl}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+###
+
+### Logout
+POST {{baseUrl}}/auth/logout
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+###
+
+### =========================
+### USERS
+### =========================
+
+### Buscar dados do usuário logado
+GET {{baseUrl}}/users/me
+Authorization: Bearer {{accessToken}}
+
+###
+
+### Atualizar usuário
+PATCH {{baseUrl}}/users/me
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "João Atualizado"
+}
+
+###
+
+### =========================
+### FREIGHT
+### =========================
+
+### Criar frete
+POST {{baseUrl}}/freight
+Content-Type: application/json
+
+{
+  "origin": "São Paulo",
+  "destination": "Rio de Janeiro",
+  "price": 1500
+}
