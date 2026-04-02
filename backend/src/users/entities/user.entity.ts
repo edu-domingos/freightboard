@@ -37,7 +37,12 @@ export class User {
   @Column({ default: true })
   active: boolean;
 
-  @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user, { cascade: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  avatar: string;
+
+  @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user, {
+    cascade: true,
+  })
   refreshTokens: RefreshToken[];
 
   @OneToMany(() => Freight, (freight) => freight.user, {
