@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './Login.css';
+import "./Login.css";
 import logo from "../assets/logo.png";
 
 export default function Login() {
@@ -8,7 +8,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [remember, setRemember] = useState(false);
-   
 
   function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -26,7 +25,6 @@ export default function Login() {
             placeholder="Digite seu email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            
           />
 
           <input
@@ -34,19 +32,16 @@ export default function Login() {
             placeholder="Digite sua senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            
           />
 
-          <button type="button"onClick={() => navigate("/home")}
-          >Entrar</button>
-
-         
+          <button type="button" onClick={() => navigate("/home")}>
+            Entrar
+          </button>
         </form>
-         <button type="button"onClick={() => navigate("/cadastro")}
-          >
-            Cadastra-se
-          </button> 
-           
+        <button type="button" onClick={() => navigate("/cadastro")}>
+          Cadastra-se
+        </button>
+
         <div className="remember-box">
           <input
             type="checkbox"
@@ -55,13 +50,9 @@ export default function Login() {
             onChange={(e) => setRemember(e.target.checked)}
           />
 
-          <label htmlFor="remember">
-            Mantenha-me conectado
-          </label>
-          </div>
+          <label htmlFor="remember">Mantenha-me conectado</label>
+        </div>
       </div>
-      
     </div>
-    
   );
 }
