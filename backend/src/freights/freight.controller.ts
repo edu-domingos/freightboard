@@ -1,35 +1,24 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
-  Param,
   Post,
-  Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { CreateFreightDto } from './dto/create-freight.dto';
 import { FreightService } from './freight.service';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { AuthTokenGuard } from 'src/auth/guards/auth-token.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@UseGuards(AuthTokenGuard)
 @Controller('freight')
 export class FreightController {
   constructor(private readonly freightService: FreightService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async create(
-    @Body() createFreightDto: CreateFreightDto,
-    @Param('id') id: string,
-  ) {
-    return this.freightService.create(id, createFreightDto);
-  }
-
-  @Get()
   @HttpCode(HttpStatus.OK)
-  async findAll(@Query() paginationDto: PaginationDto) {
-    return this.freightService.findAll(paginationDto);
+  async create(@Body() createFreightDto: CreateFreightDto, @Req() req) {
+    return this.freightService.create(req.user.id, createFreightDto);
   }
 }
