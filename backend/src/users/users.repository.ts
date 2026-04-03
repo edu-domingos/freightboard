@@ -16,13 +16,11 @@ export class UsersRepository {
   }
 
   async updateAndSave(userData: DeepPartial<User>) {
-    const updateUser = await this.userRepository.preload(userData);
+    return this.userRepository.save(userData);
+  }
 
-    if (!updateUser) {
-      return null;
-    }
-
-    return this.userRepository.save(updateUser);
+  async deleteById(id: string) {
+    return this.userRepository.delete(id);
   }
 
   async findByEmail(email: string) {
