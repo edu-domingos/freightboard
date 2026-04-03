@@ -3,8 +3,27 @@
   "editor.fontLigatures": true,
   "editor.minimap.enabled": false,
   "explorer.compactFolders": false,
+
+  // ===== Material Icon =====
   "workbench.iconTheme": "material-icon-theme",
   "material-icon-theme.activeIconPack": "nest",
+
+  "material-icon-theme.files.associations": {
+    "*.module.ts": "nest-module",
+    "*.service.ts": "nest-service",
+    "*.controller.ts": "nest-controller",
+    "*.guard.ts": "nest-guard",
+    "*.interceptor.ts": "nest-interceptor",
+    "*.pipe.ts": "nest-pipe",
+    "*.gateway.ts": "nest-gateway",
+    "*.decorator.ts": "nest-decorator"
+  },
+
+  "material-icon-theme.folders.associations": {
+    "modules": "nest",
+    "controllers": "nest",
+    "services": "nest"
+  },
 
   // ===== Formatação e ESLint =====
   "editor.formatOnSave": true,
