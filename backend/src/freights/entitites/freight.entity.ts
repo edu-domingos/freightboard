@@ -16,7 +16,7 @@ export class Freight {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({ name: 'id_user' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @Column({ name: 'origin_address', type: 'varchar', length: 255 })
