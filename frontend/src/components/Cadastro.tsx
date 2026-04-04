@@ -4,6 +4,11 @@ import axios from "axios";
 import "./Login.css";
 import Select from "react-select";
 import { toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleXmark,
+  faCircleCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Cadastro() {
   const navigate = useNavigate();
@@ -38,8 +43,8 @@ export default function Cadastro() {
     // Nome
     if (!nome.trim()) {
       novosErros.nome = "Nome é obrigatório";
-    } else if (nome.trim().length < 2) {
-      novosErros.nome = "Nome deve ter pelo menos 2 caracteres";
+    } else if (nome.trim().length < 3) {
+      novosErros.nome = "Nome deve ter pelo menos 3 caracteres";
     }
 
     // Email
@@ -79,7 +84,9 @@ export default function Cadastro() {
       );
 
       if (primeiroErro) {
-        toast.error(primeiroErro); // 👈 popup
+        toast.error(primeiroErro, {
+          icon: <FontAwesomeIcon icon={faCircleXmark} color="red" size="1x" />,
+        });
       }
 
       return false;
@@ -87,7 +94,6 @@ export default function Cadastro() {
 
     return true;
   }
-
   async function handleCadastro(e: React.FormEvent) {
     e.preventDefault();
     if (!validateForm()) {
@@ -101,15 +107,30 @@ export default function Cadastro() {
         type: tipo,
         password: senha,
       });
-
       console.log(response.data);
-      alert("Usuário cadastrado com sucesso!");
+
+      toast.success("Usuário cadastrado!", {
+        icon: (
+          <FontAwesomeIcon
+            icon={faCircleCheck}
+            style={{ fontSize: "20px", color: "#22c55e" }}
+          />
+        ),
+      });
       navigate("/");
     } catch (error) {
       console.error(error);
-      alert("Erro ao cadastrar usuário");
-      setErrors({});
+
+      toast.error("Erro ao cadastrar o usuário!", {
+        icon: (
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            style={{ fontSize: "20px", color: "#ef4444" }}
+          />
+        ),
+      });
     }
+    setErrors({});
   }
 
   return (
@@ -124,7 +145,6 @@ export default function Cadastro() {
             value={nome}
             onChange={(e) => setNome(e.target.value)}
           />
-          {errors.nome && <span className="error">{errors.nome}</span>}
 
           <input
             type="email"
@@ -132,18 +152,17 @@ export default function Cadastro() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          {errors.email && <span className="error">{errors.email}</span>}
+
           <input
             type="text"
             placeholder={
               tipo === "driver" ? "Digite seu CPF" : "Digite seu CNPJ"
             }
+            maxLength={14}
             value={documento}
             onChange={(e) => setDocumento(e.target.value)}
           />
-          {errors.documento && (
-            <span className="error">{errors.documento}</span>
-          )}
+
           <Select
             options={options}
             styles={customStyles}
@@ -159,9 +178,9 @@ export default function Cadastro() {
             type="password"
             placeholder="Digite sua senha"
             value={senha}
+            maxLength={6}
             onChange={(e) => setSenha(e.target.value)}
           />
-          {errors.senha && <span className="error">{errors.senha}</span>}
 
           <button type="submit">Cadastrar</button>
 
