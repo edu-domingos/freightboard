@@ -87,3 +87,7 @@ body {
   margin-top: 5px;
   display: inline-block;
 }
+.Toastify__toast--error {
+  background: #eceff1;
+  color: red;
+}
