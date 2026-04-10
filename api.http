@@ -11,7 +11,7 @@ Content-Type: application/json
   "name": "João Teste",
   "email": "joao@test.com",
   "password": "123456",
-  "cpf": "123456789011",
+  "cpf": "893.942.440-93",
   "type": "driver"
 }
 
@@ -29,8 +29,8 @@ Content-Type: application/json
 ###
 
 # Copie o accessToken retornado e cole abaixo
-@accessToken = COLE_SEU_ACCESS_TOKEN
-@refreshToken = COLE_SEU_REFRESH_TOKEN
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNDI1MDA5MS1hYWEyLTRmMDktYmMwNy1jYjZmMDY2ODVmOGQiLCJ0eXBlIjoiYWNjZXNzIiwianRpIjoiZDY5MWY5ZDMtZWM2MC00ZTYwLWEwNzYtOGNlYTA3NzEyNzQ2IiwiaWF0IjoxNzc1MjYyMTM5LCJleHAiOjE3NzUyNjU3MzksImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0L2FwaSIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0L2FwaSJ9.GUk-ytQEIFO1jbbQ8TmGI06sUkRNGHvpDfJPNnOEwRI
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNDI1MDA5MS1hYWEyLTRmMDktYmMwNy1jYjZmMDY2ODVmOGQiLCJ0eXBlIjoicmVmcmVzaCIsImp0aSI6IjY3YWJjZjE2LTExNjUtNGVjOC05OGZlLTY0YzU2NzViYzEwNCIsImlhdCI6MTc3NTI2MjEzOSwiZXhwIjoxNzc1MzQ4NTM5LCJhdWQiOiJodHRwczovL2xvY2FsaG9zdC9hcGkiLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdC9hcGkifQ.Pan9rj78rJEBIrLkbOWCuBK0vOTOqOpadKvVjQ-v14o
 
 ### Refresh token
 POST {{baseUrl}}/auth/refresh
@@ -71,6 +71,21 @@ Authorization: Bearer {{accessToken}}
 {
   "name": "João Atualizado"
 }
+
+###
+
+### Upload de Avatar
+POST {{baseUrl}}/users/me/avatar
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer {{accessToken}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="image.jpg"
+Content-Type: image/jpeg
+
+< ./backend/node-js.png
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###
 
