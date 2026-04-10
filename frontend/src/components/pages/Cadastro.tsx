@@ -9,6 +9,7 @@ import {
   faCircleXmark,
   faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import { validateCPF, validateCNPJ } from "../utils/validate-document";
 
 export default function Cadastro() {
   const navigate = useNavigate();
@@ -20,6 +21,15 @@ export default function Cadastro() {
   const [senha, setSenha] = useState("");
   const [tipo, setTipo] = useState("driver");
   const [documento, setDocumento] = useState("");
+  const [documentoRaw, setDocumentoRaw] = useState("");
+
+  const formatDocumento = (value: string, type: string) => {
+    const digits = value.replace(/\D/g, "");
+    if (type === "driver") {
+      return digits.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    }
+    return digits.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+  };
 
   const options = [
     { value: "driver", label: "Autônomo" },
@@ -55,18 +65,21 @@ export default function Cadastro() {
     }
 
     // Documento
-    if (!documento.trim()) {
-      novosErros.documento = "Selecione o tipo de conta";
-    } else {
-      if (tipo === "driver" && documento.length !== 11) {
-        novosErros.documento = "CPF deve ter exatamente 11 dígitos";
-      } else if (tipo === "company" && documento.length !== 14) {
-        novosErros.documento = "CNPJ deve ter exatamente 14 dígitos";
-      } else if (!/^[0-9]+$/.test(documento)) {
-        novosErros.documento = "Documento deve conter apenas números";
+    if (!documentoRaw.trim()) {
+      novosErros.documento = "Documento é obrigatório";
+    } else if (tipo === "driver") {
+      if (documentoRaw.length !== 11) {
+        novosErros.documento = "CPF deve ter 11 dígitos";
+      } else if (!validateCPF(documentoRaw)) {
+        novosErros.documento = "CPF inválido";
+      }
+    } else if (tipo === "company") {
+      if (documentoRaw.length !== 14) {
+        novosErros.documento = "CNPJ deve ter 14 dígitos";
+      } else if (!validateCNPJ(documentoRaw)) {
+        novosErros.documento = "CNPJ inválido";
       }
     }
-
     // Senha
     if (!senha.trim()) {
       novosErros.senha = "Senha é obrigatória";
@@ -103,7 +116,7 @@ export default function Cadastro() {
       const response = await axios.post("http://localhost:3000/api/users/", {
         name: nome,
         email: email,
-        cpf: documento,
+        cpf: documentoRaw,
         type: tipo,
         password: senha,
       });
@@ -158,9 +171,12 @@ export default function Cadastro() {
             placeholder={
               tipo === "driver" ? "Digite seu CPF" : "Digite seu CNPJ"
             }
-            maxLength={14}
-            value={documento}
-            onChange={(e) => setDocumento(e.target.value)}
+            value={formatDocumento(documentoRaw, tipo)}
+            onChange={(e) => {
+              const digits = e.target.value.replace(/\D/g, "");
+              const maxLength = tipo === "driver" ? 11 : 14;
+              setDocumentoRaw(digits.slice(0, maxLength));
+            }}
           />
 
           <Select
@@ -169,7 +185,7 @@ export default function Cadastro() {
             onChange={(selected: any) => {
               if (selected) {
                 setTipo(selected.value);
-                setDocumento("");
+                setDocumentoRaw("");
               }
             }}
           />
