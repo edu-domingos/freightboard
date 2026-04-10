@@ -4,7 +4,7 @@ import { UsersController } from './users.controller';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { UsersRepository } from './users.repository';
-import { Freight } from 'src/freights/entitites/freight.entity';
+import { Freight } from 'src/freights/entities/freight.entity';
 import { Argon2Service } from 'src/auth/argon2.service';
 
 @Module({

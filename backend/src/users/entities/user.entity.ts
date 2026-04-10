@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { UserType } from '../enums/user-type.enum';
 import { UserRole } from '../enums/user-role.enum';
-import { Freight } from 'src/freights/entitites/freight.entity';
+import { Freight } from 'src/freights/entities/freight.entity';
 import { RefreshToken } from 'src/auth/refresh-tokens.entity';
 
 @Entity('users')
