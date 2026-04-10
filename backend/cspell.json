@@ -1,0 +1,21 @@
+{
+  "version": "0.2",
+  "language": "en,pt-BR",
+  "useGitignore": true,
+  "ignorePaths": ["node_modules", "dist", "*.d.ts"],
+  "words": [
+    "CNPJ",
+    "cpf",
+    "cnpj",
+    "timestamptz",
+    "uuidv",
+    "diretorio",
+    "AUTOLOAD",
+    "SYNCRONIZE",
+    "postgres",
+    "fieldname",
+    "nestjs",
+    "commitlint"
+  ],
+  "import": ["@cspell/dict-pt-br/cspell-ext.json"]
+}

@@ -31,5 +31,8 @@
   "eslint.format.enable": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
-  }
+  },
+
+  // ===== Code Spell Checker =====
+  "cSpell.language": "en,pt_BR"
 }
