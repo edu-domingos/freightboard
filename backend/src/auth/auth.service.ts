@@ -22,14 +22,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     @InjectRepository(RefreshToken)
-    private readonly refreshTokenRepository: Repository<RefreshToken>
+    private readonly refreshTokenRepository: Repository<RefreshToken>,
   ) {}
 
   async register(createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
-  async login(userAgent: string, loginDto: LoginDto) {
+  async login(userAgent: string | undefined, loginDto: LoginDto) {
     const user = await this.usersService.findByEmail(loginDto.email);
 
     const passwordIsValid = await this.hashService.compare(
@@ -44,11 +44,17 @@ export class AuthService {
     return this.createTokens(userAgent, user);
   }
 
-  async refreshToken(user: User, userAgent: string, refreshTokenDto: RefreshJwtDto) {
+  async refreshToken(
+    user: User,
+    userAgent: string | undefined,
+    refreshTokenDto: RefreshJwtDto,
+  ) {
     let payload: JwtPayload;
 
     try {
-      payload = this.jwtService.verify<JwtPayload>(refreshTokenDto.refreshToken);
+      payload = this.jwtService.verify<JwtPayload>(
+        refreshTokenDto.refreshToken,
+      );
     } catch {
       throw new UnauthorizedException('Refresh token inválido ou expirado');
     }
@@ -65,33 +71,38 @@ export class AuthService {
       throw new UnauthorizedException('Token inválido ou já utilizado');
     }
 
-    await this.refreshTokenRepository.delete({ jti: payload.jti });
+    await this.refreshTokenRepository.update(
+      { jti: payload.jti },
+      { active: false, revokedAt: new Date() },
+    );
 
     return this.createTokens(userAgent, user);
   }
 
-  async logout(id: string, refreshTokenDto: RefreshJwtDto) {
+  async logout(refreshTokenDto: RefreshJwtDto) {
     try {
-      const payload = this.jwtService.verify<JwtPayload>(refreshTokenDto.refreshToken);
+      const payload = this.jwtService.verify<JwtPayload>(
+        refreshTokenDto.refreshToken,
+      );
 
       if (payload.type !== JwtType.REFRESH) {
         throw new UnauthorizedException('Token inválido');
       }
 
       const tokenExists = await this.refreshTokenRepository.findOne({
-        where: { jti: payload.jti },
+        where: { jti: payload.jti, active: true },
       });
 
       if (!tokenExists) {
         throw new UnauthorizedException('Token inválido ou revogado');
       }
 
-      await this.refreshTokenRepository.delete({
-        jti: payload.jti,
-      });
+      await this.refreshTokenRepository.update(
+        { jti: payload.jti },
+        { active: false, revokedAt: new Date() },
+      );
 
       return { message: 'Logout realizado com sucesso' };
-
     } catch {
       throw new UnauthorizedException('Refresh token inválido');
     }
@@ -117,17 +128,19 @@ export class AuthService {
       expiresIn: jwtExpires,
     });
 
-    const jwtRefreshExpires = Number(this.configService.get<number>('JWT_REFRESH_EXPIRES_IN'));
+    const jwtRefreshExpires = Number(
+      this.configService.get<number>('JWT_REFRESH_EXPIRES_IN'),
+    );
     const refreshToken = this.jwtService.sign(refreshPayload, {
       expiresIn: jwtRefreshExpires,
     });
 
-    const decoded = this.jwtService.decode(refreshToken) as any;
+    const decoded = this.jwtService.decode<JwtPayload>(refreshToken);
 
     await this.refreshTokenRepository.save({
       jti: refreshJti,
       user: { id: user.id },
-      expiresAt: new Date(decoded.exp * 1000),
+      expiresAt: new Date(decoded.exp! * 1000),
       userAgent: userAgent,
     });
 

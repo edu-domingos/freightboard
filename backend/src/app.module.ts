@@ -7,7 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import Joi from 'joi';
 import { AuthModule } from './auth/auth.module';
 import { CacheModule } from '@nestjs/cache-manager';
-import { redisStore } from 'cache-manager-ioredis-yet';
+import * as redisStore from 'cache-manager-ioredis';
 
 @Module({
   imports: [
@@ -56,13 +56,12 @@ import { redisStore } from 'cache-manager-ioredis-yet';
     CacheModule.registerAsync({
       isGlobal: true,
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: (config: ConfigService) => ({
         store: redisStore,
-        socket: {
-          host: configService.get<string>('REDIS_HOST'),
-          port: Number(configService.get<number>('REDIS_PORT')),
-        },
-        ttl: 60,
+        host: config.get('REDIS_HOST'),
+        port: config.get('REDIS_PORT'),
+        ttl: 1440,
+        auth_pass: config.get('REDIS_PASSWORD'),
       }),
     }),
     AuthModule,

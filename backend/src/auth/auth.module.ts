@@ -8,27 +8,28 @@ import { UsersModule } from 'src/users/users.module';
 import { RefreshToken } from './refresh-tokens.entity';
 import { User } from 'src/users/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtStrategy } from './jwt.strategy';
 
 @Global()
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, RefreshToken]),
     JwtModule.registerAsync({
-    inject: [ConfigService],
-    useFactory: (configService: ConfigService) => ({
-      secret: configService.get<string>('JWT_SECRET'),
-      signOptions: {
-        algorithm: configService.get<'HS256'>('JWT_ALGORITHM'),
-        audience: configService.get<string>('JWT_AUDIENCE'),
-        issuer: configService.get<string>('JWT_ISSUER'),
-        expiresIn: Number(configService.get<string>('JWT_EXPIRES_IN')),
-      },
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          algorithm: configService.get<'HS256'>('JWT_ALGORITHM'),
+          audience: configService.get<string>('JWT_AUDIENCE'),
+          issuer: configService.get<string>('JWT_ISSUER'),
+          expiresIn: Number(configService.get<string>('JWT_EXPIRES_IN')),
+        },
+      }),
     }),
-  }),
     UsersModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, Argon2Service],
+  providers: [AuthService, Argon2Service, JwtStrategy],
   exports: [],
 })
 export class AuthModule {}

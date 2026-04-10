@@ -14,41 +14,41 @@ import { RefreshToken } from 'src/auth/refresh-tokens.entity';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ type: 'varchar', unique: true, length: 11 })
-  cpf: string;
+  cpf!: string;
 
   @Column({ type: 'varchar', length: 100 })
-  name: string;
+  name!: string;
 
   @Column({ type: 'varchar', unique: true, length: 255 })
-  email: string;
+  email!: string;
 
   @Column({ type: 'varchar', length: 255 })
-  password: string;
+  password!: string;
 
   @Column({ type: 'enum', enum: UserType })
-  type: UserType;
+  type!: UserType;
 
   @Column({ type: 'enum', enum: UserRole })
-  role: UserRole;
+  role!: UserRole;
 
   @Column({ default: true })
-  active: boolean;
+  active!: boolean;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  avatar: string;
+  avatar!: string;
 
   @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user, {
     cascade: true,
   })
-  refreshTokens: RefreshToken[];
+  refreshTokens!: RefreshToken[];
 
   @OneToMany(() => Freight, (freight) => freight.user, {
     onUpdate: 'CASCADE',
   })
-  freights: Freight[];
+  freights!: Freight[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

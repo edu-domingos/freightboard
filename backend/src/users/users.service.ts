@@ -1,5 +1,8 @@
 import {
+  BadRequestException,
   ConflictException,
+  HttpException,
+  HttpStatus,
   Inject,
   Injectable,
   NotFoundException,
@@ -14,10 +17,13 @@ import { Argon2Service } from 'src/auth/argon2.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import type { Cache } from 'cache-manager';
 import path from 'path';
-import fs from 'fs';
+import fs from 'fs/promises';
+import { MultipartFile } from '@fastify/multipart';
 
 @Injectable()
 export class UsersService {
+  private static readonly UPLOADS_DIR = '../../uploads/avatar';
+
   constructor(
     private readonly userRepository: UsersRepository,
     private readonly hashService: Argon2Service,
@@ -46,6 +52,10 @@ export class UsersService {
   }
 
   async update(user: User, updateUserDto: UpdateUserDto) {
+    if (this.isDtoEmpty(updateUserDto)) {
+      throw new BadRequestException('Nenhum campo para atualizar');
+    }
+
     const userData: DeepPartial<User> = {
       id: user.id,
       name: updateUserDto.name,
@@ -87,26 +97,49 @@ export class UsersService {
     return user;
   }
 
-  async updateAvatar(user: User, file: any) {
+  async updateAvatar(user: User, file: MultipartFile) {
     const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+
     if (!allowedMimeTypes.includes(file.mimetype)) {
-      throw new Error('Tipo de arquivo não permitido. Apenas PNG ou JPEG.');
+      throw new HttpException(
+        'Tipo de arquivo não permitido. Apenas PNG ou JPEG.',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
-    const uploadDir = path.join(__dirname, '../../uploads');
-    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+    const uploadDir = path.join(__dirname, UsersService.UPLOADS_DIR);
 
+    // cria o diretorio se não existir
+    await fs.mkdir(uploadDir, { recursive: true });
+
+    // nome único para o arquivo
     const filename = `${user.id}-${Date.now()}-${file.filename}`;
     const filePath = path.join(uploadDir, filename);
 
+    // escrever o arquivo no sistema
     const data = await file.toBuffer();
-    fs.writeFileSync(filePath, data);
+    await fs.writeFile(filePath, data);
 
     const userData: DeepPartial<User> = {
       ...user,
-      avatar: `/uploads/${filename}`,
+      avatar: `/uploads/avatar/${filename}`,
     };
 
+    if (user.avatar) {
+      const oldUploadDir = path.join(
+        __dirname,
+        UsersService.UPLOADS_DIR,
+        path.basename(user.avatar),
+      );
+      await fs.unlink(oldUploadDir);
+    }
+
     return this.userRepository.updateAndSave(userData);
+  }
+
+  private isDtoEmpty(updateUserDto: UpdateUserDto): boolean {
+    return Object.values(updateUserDto).every(
+      (value) => value === undefined || value === null || value === '',
+    );
   }
 }

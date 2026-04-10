@@ -1,9 +1,11 @@
+import { JwtType } from './jwt-type.enum';
+
 export interface JwtPayload {
   /** Subject: geralmente o ID do usuário */
   sub: string;
 
   /** Tipo de token: access, refresh, etc */
-  type: string;
+  type: JwtType;
 
   /** Id único do token */
   jti?: string;
